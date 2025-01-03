@@ -1,0 +1,45 @@
+* { 
+    font-family: 'Vazirmatn', 'Rubik';
+}
+
+body {
+    margin: 0;
+}
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 11px;
+}
+::-webkit-scrollbar-track {
+    background: #DEDFE2;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+::-webkit-scrollbar-thumb {
+    background: #BAC4D5;
+    border-radius: 10px;
+    border: 3px #DEDFE2 solid;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #939FB3;
+    border: 3px #C9C9C9 solid;
+}
+::-webkit-scrollbar-track:active{
+    background-color: #C9C9C9;
+}
+
+/* buttons */
+button {
+    color: #03183B;
+    border: 2px solid #03183B;
+    background-color: #D9D9D9;
+    border-radius: 9px;
+    
+    transition: all 0.15s;
+}
+button:hover {
+    background-color: #BAC4D5;
+}
+button:active {
+    background-color: #909AAB;
+}

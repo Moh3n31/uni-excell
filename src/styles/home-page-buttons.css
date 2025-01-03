@@ -1,0 +1,45 @@
+/* filter button */
+
+.hp-filter-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 53px;
+    height: 27px;
+    padding: 0 5px 0 3px;
+}
+.hp-filter-button>img {
+    height: 27px;
+}
+
+/* add button */
+
+.hp-add-button {
+    padding: 1px 0 0 0;
+    margin-right: 5px;
+    height: 27px;
+    width: 27px;
+}
+.hp-add-button>img {
+    height: 23px;
+}
+
+.hp-setting-button {
+    background-color: #F1F1F1;
+    padding: 1px 0 0 0;
+    height: 30px;
+    width: 30px;
+}
+
+/* settings button */
+
+.hp-setting-button>img {
+    height: 24px;
+}
+.hp-setting-button:hover {
+    background-color: #03183B;
+}
+.hp-setting-button:active {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.379);
+}
