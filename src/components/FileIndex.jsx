@@ -14,7 +14,7 @@ export default function FileIndex (props) {
             <div className="file-index-right">
                 <p>{props.name}</p>
                 <p>{`${props.month} ${props.year}`}</p>
-                <p className="type-text">~ {fileType}</p>
+                <p className="type-text">~ {fileType[0]}، {fileType[1]}</p>
             </div>
             <div className="file-index-left">
                 <p>{props.fileDate}</p>

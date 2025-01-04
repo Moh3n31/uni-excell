@@ -1,9 +1,13 @@
 import { useState } from "react";
-// import { useEffect } from 'react';
+import moment from 'moment-jalaali';
+
 
 //components
 import IndexContainer from "./IndexContainer";
 import FilterSction from "./FilterSection";
+import AddingSection from "./AddingSection";
+
+//database
 import excellFiles from "../database/excellFiles";
 
 //style
@@ -22,7 +26,7 @@ export default function HomePage () {
     // eslint-disable-next-line no-unused-vars
     const  [isSettingOn, setIsSettingOn] = useState (false);
     const [isFilterOpen, setISFilterOpen] = useState (false);
-    // const [firstRender, setFirstRender] = useState (true);
+    const [isAddOpen, setISAddOpen] = useState (false);
 
     //these contain the true values of the filter section
     const [typeFilter, setTypeFilter] = useState ([]);
@@ -37,6 +41,12 @@ export default function HomePage () {
     const realYears = getUniqueValues(excellFiles, 'year');
     const realTypes = [...new Set(excellFiles.flatMap(item => item.tags))];
 
+    const getTodayInPersian = () => {
+        return moment().format('jYYYY/jMM/jDD')
+    };
+    
+    console.log(getTodayInPersian());
+
     function handleHover() {
         setIsSettingOn(prev => {
             const newValue = !prev;
@@ -47,6 +57,10 @@ export default function HomePage () {
 
     function openFilter () {
         setISFilterOpen (prev=>!prev);
+    }
+
+    function openAdd () {
+        setISAddOpen (prev=>!prev);
     }
 
     function checkItem (item, list) {
@@ -119,6 +133,19 @@ export default function HomePage () {
         }
     }
 
+    function addNewFile (record) {
+        const today = getTodayInPersian();
+        const newRecord = {
+            fileId: (excellFiles.length+1),
+            name: `${record.name} ${record.month} ${record.year}`,
+            month: record.month,
+            year: record.year,
+            tags: record.tags,
+            fileDate: today
+        }
+        excellFiles.push (newRecord);
+    }
+
     return (
         <div className="hp-semi-body">
             <div className="hp-container">
@@ -132,7 +159,7 @@ export default function HomePage () {
                         <img src={settingIcon} alt="settings-icon"/>
                         </button>
 
-                        <button className="hp-add-button">
+                        <button className="hp-add-button" onClick={openAdd}>
                         <img src={addIcon} alt="add-icon"/>
                         </button>
                     </div>
@@ -158,6 +185,8 @@ export default function HomePage () {
 
                 <IndexContainer yearFilter={yearFilter}
                 monthFilter={monthFilter} typeFilter={typeFilter}/>
+
+                {isAddOpen && <AddingSection OnClose={openAdd} OnSubmit={addNewFile}/>}
             </div>
         </div>
     )

@@ -26,7 +26,7 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]})
                 name={file.name}
                 month={file.month}
                 year={file.year}
-                type={file.type}
+                type={file.tags}
                 fileDate={file.fileDate}/>
             );
         }
