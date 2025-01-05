@@ -1,9 +1,12 @@
 /* eslint-disable react/prop-types */
+import { useState } from 'react';
 //components
 import FileIndex from "./FileIndex";
 import excellFiles from "../database/excellFiles";
 
 export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]}) {
+
+    const [fileArray, setFileArray] = useState ([...excellFiles]);
 
     function checkFilters(tags, year, month) {
         const filterByYear = (!yearFilter || yearFilter.length === 0);
@@ -16,18 +19,38 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]})
 
         return matchYear && matchMonth && matchType;
     }
+
+    function updateFile(newForm) {
+        const temp = [...fileArray];
+
+        const correctedForm = {
+            fileId:newForm.fileId, 
+            name:newForm.name, 
+            month:newForm.month, 
+            year:newForm.year, 
+            tags:[newForm.tag1, newForm.tag2],
+            fileDate:newForm.fileDate
+        };
+
+        temp.splice(correctedForm.fileId-1,1,correctedForm);
     
-    const createFiles =excellFiles.map ((file) => {
+        setFileArray(temp);
+    }
+    
+    
+    const createFiles =fileArray.map ((file, index) => {
         if (checkFilters(file.tags, file.year, file.month)){
 
             return (
                 <FileIndex
-                key={file.fileId} 
+                key={index}
+                fileId={file.fileId}
                 name={file.name}
                 month={file.month}
                 year={file.year}
                 type={file.tags}
-                fileDate={file.fileDate}/>
+                fileDate={file.fileDate}
+                updateFile={updateFile}/>
             );
         }
         else return null;
