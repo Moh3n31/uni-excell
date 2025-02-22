@@ -4,7 +4,7 @@ import { useState } from 'react';
 import FileIndex from "./FileIndex";
 import excellFiles from "../database/excellFiles";
 
-export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]}) {
+export default function IndexContainer({yearFilter, monthFilter, typeFilter=[],handleView}) {
 
     const [fileArray, setFileArray] = useState ([...excellFiles]);
 
@@ -38,8 +38,8 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]})
     }
     
     
-    const createFiles =fileArray.map ((file, index) => {
-        if (checkFilters(file.tags, file.year, file.month)){
+    const createFiles = fileArray.map ((file, index) => {
+        if (checkFilters(file.tags, file.year, file.month)&& !file.archived){
 
             return (
                 <FileIndex
@@ -49,6 +49,7 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[]})
                 month={file.month}
                 year={file.year}
                 type={file.tags}
+                handleView={handleView}
                 fileDate={file.fileDate}
                 updateFile={updateFile}/>
             );

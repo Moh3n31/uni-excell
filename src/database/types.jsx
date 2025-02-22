@@ -1,22 +1,18 @@
 export default [
     {
         keyId: 1,
-        name: "خدمات",
-        engName: "services"
+        name: "خدمات"
     },
     {
         keyId: 2,
-        name: "فضای سبز",
-        engName: "parks"
+        name: "فضای سبز"
     },
     {
         keyId: 3,
-        name: "پرسنل",
-        engName: "personel"
+        name: "پرسنل"
     },
     {
         keyId: 4,
-        name: "حقوق",
-        engName: "payment"
+        name: "حقوق"
     }
 ]

@@ -5,7 +5,8 @@ export default [
         month: "شهریور",
         year: "۱۴۰۳",
         tags: ["حقوق", "خدمات"],
-        fileDate: "1403/10/4"
+        fileDate: "1403/10/4",
+        archived: 0
     },
     {
         fileId: 2,
@@ -13,7 +14,8 @@ export default [
         month: "مهر",
         year: "۱۴۰۳",
         tags: ["حقوق", "فضای سبز"],
-        fileDate: "1403/10/4"
+        fileDate: "1403/10/4",
+        archived: 0
     },
     {
         fileId: 3,
@@ -21,7 +23,8 @@ export default [
         month: "مهر",
         year: "۱۴۰۳",
         tags: ["پرسنل", "فضای سبز"],
-        fileDate: "1403/10/4"
+        fileDate: "1403/10/4",
+        archived: 0
     },
     {
         fileId: 4,
@@ -29,7 +32,7 @@ export default [
         month: "شهریور",
         year: "۱۴۰۳",
         tags: ["پرسنل", "خدمات"],
-        fileDate: "1403/10/4"
-    },
-    
+        fileDate: "1403/10/4",
+        archived: 0
+    }
 ]

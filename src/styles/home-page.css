@@ -68,3 +68,25 @@
     overflow-y: auto;
     max-height: 500px;
 }
+
+/* scrollbar */
+::-webkit-scrollbar {
+    width: 11px;
+}
+::-webkit-scrollbar-track {
+    background: #DEDFE2;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+::-webkit-scrollbar-thumb {
+    background: #BAC4D5;
+    border-radius: 10px;
+    border: 3px #DEDFE2 solid;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #939FB3;
+    border: 3px #C9C9C9 solid;
+}
+::-webkit-scrollbar-track:active{
+    background-color: #C9C9C9;
+}

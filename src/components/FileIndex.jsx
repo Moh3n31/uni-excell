@@ -63,14 +63,21 @@ export default function FileIndex (props) {
         setIsEditing(prev => !prev);
     }
 
+    const handleClick = (event) => {
+        if (!isEditing && !event.target.closest('.edit-button')) {
+            props.handleView(props.fileId);
+        }
+    };
+
     return (
-        <div className="index">
+        <div className="index" onClick={handleClick}>
             <div className="file-index-right">
                 {!isEditing ? 
                     <p>
                         {props.name}
                     </p> : 
-                    <input type="text" value={newForm.name} onChange={handleChange} name="name"/>}
+                    <input type="text" value={newForm.name} id="name-editor"
+                    onChange={handleChange} name="name" className="selector"/>}
                 {!isEditing ? 
                     <p>
                         {`${props.month} ${props.year}`}

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 import moment from 'moment-jalaali';
 
@@ -6,9 +7,7 @@ import moment from 'moment-jalaali';
 import IndexContainer from "./IndexContainer";
 import FilterSction from "./FilterSection";
 import AddingSection from "./AddingSection";
-
-//database
-import excellFiles from "../database/excellFiles";
+import SettingsSection from "./SettingsSection";
 
 //style
 import '../styles/home-page.css';
@@ -21,10 +20,14 @@ import settingIconOff from "../Icons/settings-off.png";
 import settingIconOn from "../Icons/settings-on.png";
 import filterIcon from '../Icons/filter.png';
 
-export default function HomePage () {
+export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
+
+    const [filterArray, setFilterArray] = useState([...types]);
+
+    //states of pop up features
     const [settingIcon, setSettingIcon] = useState (settingIconOff);
-    // eslint-disable-next-line no-unused-vars
     const  [isSettingOn, setIsSettingOn] = useState (false);
+    const  [, setSettingHover] = useState (false);
     const [isFilterOpen, setISFilterOpen] = useState (false);
     const [isAddOpen, setISAddOpen] = useState (false);
 
@@ -48,12 +51,14 @@ export default function HomePage () {
     console.log(getTodayInPersian());
 
     function handleHover() {
-        setIsSettingOn(prev => {
+        setSettingHover(prev => {
             const newValue = !prev;
             setSettingIcon(newValue ? settingIconOn : settingIconOff);
             return newValue;
         });
     }
+
+    //...............opening diffrent sections...............
 
     function openFilter () {
         setISFilterOpen (prev=>!prev);
@@ -62,6 +67,12 @@ export default function HomePage () {
     function openAdd () {
         setISAddOpen (prev=>!prev);
     }
+
+    function openSettings () {
+        setIsSettingOn (prev=>!prev);
+    }
+
+    //...............rendering files in the page...............
 
     function checkItem (item, list) {
         return list && list.includes(item);
@@ -133,6 +144,7 @@ export default function HomePage () {
         }
     }
 
+    //...............adding new things like files and types...............
     function addNewFile (record) {
         const today = getTodayInPersian();
         const newRecord = {
@@ -146,6 +158,12 @@ export default function HomePage () {
         excellFiles.push (newRecord);
     }
 
+    function updateFilters (newFilterArray) {
+        setFilterArray ([...newFilterArray]);
+    }
+
+    //...............the component itself...............
+
     return (
         <div className="hp-semi-body">
             <div className="hp-container">
@@ -154,7 +172,7 @@ export default function HomePage () {
                 
                 <div className="hp-header">
                     <div className="hp-right-header">
-                        <button className="hp-setting-button"
+                        <button className="hp-setting-button" onClick={openSettings}
                         onMouseOver={handleHover} onMouseOut={handleHover}>
                         <img src={settingIcon} alt="settings-icon"/>
                         </button>
@@ -183,10 +201,14 @@ export default function HomePage () {
                     </div>
                 </div>
 
-                <IndexContainer yearFilter={yearFilter}
+                <IndexContainer yearFilter={yearFilter} handleView={handleView}
                 monthFilter={monthFilter} typeFilter={typeFilter}/>
 
                 {isAddOpen && <AddingSection OnClose={openAdd} OnSubmit={addNewFile}/>}
+                {isSettingOn && <SettingsSection OnClose={openSettings} 
+                                    filterArray={filterArray}
+                                    OnSubmit={updateFilters}
+                                />}
             </div>
         </div>
     )

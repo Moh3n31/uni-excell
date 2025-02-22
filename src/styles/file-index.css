@@ -12,6 +12,7 @@
 }
 .index:hover {
     box-shadow: 02px 4px 6px rgba(0, 0, 0, 0.285);
+    
 }
 
 .file-index-right {
@@ -62,4 +63,8 @@
 .edit-button:active {
     background-color: #7389AC;
     border: 1px solid #7389AC;
+}
+
+#name-editor {
+    height: 20px;
 }

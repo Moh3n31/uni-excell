@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState } from "react";
 
 import "../styles/login-page.css";
@@ -5,7 +6,7 @@ import "../styles/login-page.css";
 import webLogo from "../Icons/qom-icon.png";
 import allowedUsers from "../database/allowedUsers";
 
-export default function LoginPage (){
+export default function LoginPage ({handleLogin}){
     const [inputs, setInputs] = useState ({username:null,password:null});
     const user =allowedUsers;
 
@@ -16,7 +17,7 @@ export default function LoginPage (){
         setInputs(temp);
     }
 
-    function handleLogin () {
+    function handleValidate () {
         var check = false;
         user.forEach(item => {
             if ((inputs.username === item.username)
@@ -27,7 +28,10 @@ export default function LoginPage (){
                 return;
             }
         })
-        if (!check)
+        if (check) {
+            handleLogin();
+        }
+        else if (!check)
             alert("wrong user");
     }
 
@@ -51,7 +55,7 @@ export default function LoginPage (){
                         name="password" onChange={handleChange}></input>
                 </div>
 
-                <button className="login-button" onClick={handleLogin}>ورورد</button>
+                <button className="login-button" onClick={handleValidate}>ورورد</button>
             </div>
         </div>
     )
