@@ -7,7 +7,7 @@ export default function FilterSelector (props) {
 
     const creatItems = props.Source.map((item, index) => {
         return (
-            <div key={index}>
+            <div key={index} className="filter-item">
                 <input type="checkbox" id={index} name={item}
                     checked={props.checkItem(item, props.selectFilter)}
                     onChange={props.handleSelectChange}/>

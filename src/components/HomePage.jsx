@@ -19,8 +19,9 @@ import addIcon from "../Icons/add.png";
 import settingIconOff from "../Icons/settings-off.png";
 import settingIconOn from "../Icons/settings-on.png";
 import filterIcon from '../Icons/filter.png';
+import logoutIcon from '../Icons/logout.png';
 
-export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
+export default function HomePage ({handleView,handleLogOut,excellFiles,types}) {
 
     const [filterArray, setFilterArray] = useState([...types]);
 
@@ -35,6 +36,7 @@ export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
     const [typeFilter, setTypeFilter] = useState ([]);
     const [monthFilter, setMonthFilter] = useState ([]);
     const [yearFilter, setYearFilter] = useState ([]);
+    const [archive, setArchive] = useState (false);
 
     //these are the actual filter optians
     const getUniqueValues = (array, key) => { 
@@ -144,6 +146,10 @@ export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
         }
     }
 
+    function handleArchiveChange () {
+        setArchive(prev=>!prev);
+    }
+
     //...............adding new things like files and types...............
     function addNewFile (record) {
         const today = getTodayInPersian();
@@ -188,6 +194,8 @@ export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
                             handleYearChange={handleYearChange}
                             handleMonthChange={handleMonthChange}
                             handleTypeChange={handleTypeChange}
+                            handleArchiveChange={handleArchiveChange}
+                            archiveState={archive}
                             checkItem={checkItem}
                             realYears={realYears}
                             realMonths={realMonths}
@@ -202,13 +210,16 @@ export default function HomePage ({handleView,handleLogin,excellFiles,types}) {
                 </div>
 
                 <IndexContainer yearFilter={yearFilter} handleView={handleView}
-                monthFilter={monthFilter} typeFilter={typeFilter}/>
+                monthFilter={monthFilter} typeFilter={typeFilter} archiveState={archive}/>
 
                 {isAddOpen && <AddingSection OnClose={openAdd} OnSubmit={addNewFile}/>}
                 {isSettingOn && <SettingsSection OnClose={openSettings} 
                                     filterArray={filterArray}
                                     OnSubmit={updateFilters}
                                 />}
+                <button className="viewPage-button" id="hp-logout" onClick={handleLogOut}>
+                    <img src={logoutIcon} alt="logout"/>
+                </button>
             </div>
         </div>
     )

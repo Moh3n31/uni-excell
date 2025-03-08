@@ -8,9 +8,11 @@ import allowedUsers from "../database/allowedUsers";
 
 export default function LoginPage ({handleLogin}){
     const [inputs, setInputs] = useState ({username:null,password:null});
+    const [wrong, setWrong] = useState (false);
     const user =allowedUsers;
 
     function handleChange(event) {
+        setWrong(false);
         const {value, name} = event.target;
         var temp = inputs;
         temp = {...temp, [name]: value};
@@ -23,7 +25,6 @@ export default function LoginPage ({handleLogin}){
             if ((inputs.username === item.username)
                 &&
                 (inputs.password === item.password)) {
-                alert("alright");
                 check =true;
                 return;
             }
@@ -32,11 +33,11 @@ export default function LoginPage ({handleLogin}){
             handleLogin();
         }
         else if (!check)
-            alert("wrong user");
+            setWrong (true);
     }
 
     return (
-        <div className="login-semi-body">
+        <div className="login-semi-body" id={wrong?"red-bg":""}>
             <div className="container">
                 <img src={webLogo} alt="web logo" className="web-logo"/>
 
@@ -48,11 +49,11 @@ export default function LoginPage ({handleLogin}){
                 <div className="inputs">
                     <p className="input-text">نام کاربری :</p>
                     <input type="text" className="login-input" value={inputs.username}
-                    name="username" onChange={handleChange}></input>
+                    name="username" onChange={handleChange} id={wrong?"red-input":""}></input>
 
                     <p className="input-text">رمز عبور‌ :</p>
                     <input type="password" className="login-input" value={inputs.password}
-                        name="password" onChange={handleChange}></input>
+                        name="password" onChange={handleChange} id={wrong?"red-input":""}></input>
                 </div>
 
                 <button className="login-button" onClick={handleValidate}>ورورد</button>

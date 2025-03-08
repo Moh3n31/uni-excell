@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { useRef, useEffect, useState } from "react";
 
@@ -16,7 +17,7 @@ import types from "../database/types";
 //components
 import FileUpload from "./FileUpload";
 
-export default function AddingSection ({OnClose, OnSubmit}) {
+export default function AddingSection ({OnClose, OnSubmit, defaultValues}) {
 
     const [formInfo, setFormInfo] = useState ({name:"",month:"", year:"",tags:[], file:null});
     const [isOpen, setIsOpen] = useState (false);
@@ -32,14 +33,25 @@ export default function AddingSection ({OnClose, OnSubmit}) {
             !divRef.current.contains(event.target)) { 
                 setIsOpen(false);
             } 
-        }; 
+    }; 
         
-        useEffect(() => { 
-            document.addEventListener('mousedown', handleClickOutside); 
-            return () => { 
-                document.removeEventListener('mousedown', handleClickOutside); 
-            }; 
-        }, []);
+    useEffect(() => { 
+        if (defaultValues) {
+            const temp = {
+                name: defaultValues.name,
+                month: defaultValues.month,
+                year: defaultValues.year,
+                tags: [...defaultValues.tags],
+                file: null
+            };
+            setFormInfo(temp);
+        }
+
+        document.addEventListener('mousedown', handleClickOutside); 
+        return () => { 
+            document.removeEventListener('mousedown', handleClickOutside); 
+        }; 
+    }, []);
 
     const creatTypes = types.map((item) => {
         return (
@@ -57,12 +69,14 @@ export default function AddingSection ({OnClose, OnSubmit}) {
     }
 
     const createMonths = months.map((month) => ( 
-        <option key={month.keyId} name={month.name} value={month.keyId}> 
+        <option key={month.keyId} name={month.name}
+            value={month.keyId} selected={formInfo.month===month.name?true:false}> 
             {month.name}
         </option>
     ));
     const createYears = years.map((year) => ( 
-        <option key={year.keyId} name={year.name} value={year.keyId}> 
+        <option key={year.keyId} name={year.name}
+            value={year.keyId}  selected={formInfo.year===year.name?true:false}> 
             {year.name}
         </option>
     ));
@@ -114,7 +128,7 @@ export default function AddingSection ({OnClose, OnSubmit}) {
 
             <div className="add-input-section">
                 <input type="text" placeholder="نام رکورد" name="name"
-                className="file-name" onChange={handleChange}/>
+                className="file-name" onChange={handleChange} value={formInfo.name}/>
                 <div className="selector-div">
                     <select className="selector" name="year"
                         onChange={handleChange}> 

@@ -4,11 +4,11 @@ import { useState } from 'react';
 import FileIndex from "./FileIndex";
 import excellFiles from "../database/excellFiles";
 
-export default function IndexContainer({yearFilter, monthFilter, typeFilter=[],handleView}) {
+export default function IndexContainer({yearFilter, monthFilter, typeFilter=[],handleView, archiveState}) {
 
     const [fileArray, setFileArray] = useState ([...excellFiles]);
 
-    function checkFilters(tags, year, month) {
+    function checkFilters(tags, year, month, archived) {
         const filterByYear = (!yearFilter || yearFilter.length === 0);
         const filterByMonth = (!monthFilter || monthFilter.length === 0);
         const filterByType = (!typeFilter || typeFilter.length ===0);
@@ -17,7 +17,10 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[],h
         const matchMonth = filterByMonth || monthFilter.includes(month);
         const matchType = filterByType || typeFilter.every(item => tags.includes(item));
 
-        return matchYear && matchMonth && matchType;
+        if(!archiveState)
+            return matchYear && matchMonth && matchType && !archived;
+        else if(archiveState)
+            return matchYear && matchMonth && matchType && archived;
     }
 
     function updateFile(newForm) {
@@ -39,7 +42,7 @@ export default function IndexContainer({yearFilter, monthFilter, typeFilter=[],h
     
     
     const createFiles = fileArray.map ((file, index) => {
-        if (checkFilters(file.tags, file.year, file.month)&& !file.archived){
+        if (checkFilters(file.tags, file.year, file.month, file.archived)){
 
             return (
                 <FileIndex

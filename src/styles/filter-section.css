@@ -10,7 +10,7 @@
     top: 44px;
     left: 130px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 7px;
     margin-left: 5px;
     accent-color: #03183B;
@@ -78,4 +78,22 @@
     z-index: 2;
     opacity: 1;
     animation: open-filter 0.15s;
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.archive-check {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: min-content;
+    width: min-content;
+}
+
+.archive-check>img {
+    height: 24px;
 }

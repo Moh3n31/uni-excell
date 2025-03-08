@@ -1,5 +1,11 @@
 import { useState } from "react";
 
+import {
+    Routes,
+    Route,
+    useNavigate
+  } from "react-router-dom";
+
 //components
 import LoginPage from './components/LoginPage';
 import HomePage from './components/HomePage';
@@ -9,56 +15,81 @@ import ViewPage from './components/view-page/ViewPage';
 import excellFiles from "./database/excellFiles";
 import types from "./database/types";
 
+//styles
 import './styles/general.css';
 
-export default function App (){
-    const [logIn, setLogIn] = useState (false);
-    const [homePage, sethomePage] = useState (true);
-    const [view, setView] = useState (false);
-
-    const [viewId, setViewId] = useState(0);
-
-    function handleLogin (){
-        setLogIn(false);
-        sethomePage(true);
-    }
-    function handleView (fileId){
-        setViewId (fileId);
-        
-        sethomePage (false);
-        setView (true);
-    }
+export default function App() {
     
-    function handleHome (){
-        sethomePage (true);
-        setView (false);
+    const [viewId, setViewId] = useState(0);
+    const navigate = useNavigate();
+
+//..............navigation functions..............
+
+    function handleLogin() {
+        navigate('/home');
     }
+
+    function handleLogOut() {
+        navigate('/');
+    }
+
+    function handleView(fileId) {
+        setViewId(fileId);
+        navigate('/view');
+    }
+
+    function handleHome() {
+        navigate('/home');
+    }
+
+//..............file management..............
 
     function handleDelete() {
-        var deleteId = 0;
-
-        excellFiles.forEach((element) => {
-            
-            const missmatch = element.fileId != viewId;
-
-            if(!missmatch)
-                deleteId = element.fileId;
-        });
-
-        excellFiles[deleteId].archived=!(excellFiles[deleteId].archived);
+        const fileToDelete = excellFiles.find((element) => element.fileId === viewId);
+        if (fileToDelete) {
+            fileToDelete.archived = !fileToDelete.archived;
+        }
         return handleHome();
     }
 
+    function handleFileEdit(id, update) {
+        //finds the file using id
+        //then updates it based on the given 'update'
+    }
+
+//..............component..............
+
     return (
-        <div>
-            {logIn && <LoginPage handleLogin={handleLogin}/>}
-
-            {homePage && <HomePage handleLogin={handleLogin}
-                handleView={handleView} excellFiles={excellFiles} types={types}/>}
-
-            {view && <ViewPage handleLogin={handleLogin}
-                handleHome={handleHome} viewId={viewId}
-                types={types} handleDelete={handleDelete}/>}
-        </div>
+            <div>
+                <Routes>
+                    <Route path="/" element={
+                        <LoginPage handleLogin={handleLogin}/>
+                        } />
+                    <Route 
+                        path="/home" 
+                        element={
+                        <HomePage 
+                            handleLogOut={handleLogOut} 
+                            handleView={handleView} 
+                            excellFiles={excellFiles} 
+                            types={types}
+                        />
+                        } 
+                    />
+                    <Route 
+                        path="/view" 
+                        element={
+                        <ViewPage
+                            handleLogOut={handleLogOut}
+                            handleHome={handleHome}
+                            viewId={viewId}
+                            types={types}
+                            handleDelete={handleDelete}
+                            updateTheFile={handleFileEdit}
+                        />
+                        } 
+                    />
+                </Routes>
+            </div>
     );
 }

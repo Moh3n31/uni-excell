@@ -2,6 +2,7 @@
   "name": "uni-excell",
   "private": true,
   "version": "0.0.0",
+  "main": "main.jsx",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,6 +16,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-dropzone": "^14.3.5",
+    "react-router-dom": "^7.3.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

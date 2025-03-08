@@ -43,3 +43,9 @@
 .hp-setting-button:active {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.379);
 }
+
+#hp-logout {
+    position: absolute;
+    right: 76px;
+    bottom: 40px;
+}

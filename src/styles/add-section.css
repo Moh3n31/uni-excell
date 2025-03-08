@@ -12,6 +12,7 @@
     background-color: #7A85A0;
     border: 2px solid #03183B;
     border-radius: 10px;
+    z-index: 2;
 }
 
 .close-button {

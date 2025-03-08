@@ -8,6 +8,22 @@
     border: none;
 }
 
+@keyframes get-red {
+    0%{
+        background-color: #DEDFE2;
+    }
+    50%{
+        background-color: #e0b6b6;
+    }
+    100%{
+        background-color: #DEDFE2;
+    }
+}
+
+#red-bg {
+    animation: get-red 1.4s;
+}
+
 .container {
     position: absolute;
     width: stretch;
@@ -65,6 +81,7 @@
     padding-right: 20px;
     padding-left: 20px;
     font-size: 20px;
+    transition: all 1.6s;
 }
 
 .input-text {
@@ -73,6 +90,11 @@
     font-weight: bold;
     text-align: left;
     line-height: 10px;
+}
+
+#red-input {
+    background: #e0cac6;
+    border: 2px solid #3b030c;
 }
 
 .login-button {

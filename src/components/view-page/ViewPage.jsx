@@ -6,6 +6,7 @@ import '../../styles/view.css';
 
 //components
 import DataGrid from "./DataGrid";
+import AddingSection from "../AddingSection";
 
 //things
 import searchIcon from '../../Icons/search.png';
@@ -13,24 +14,36 @@ import downloadIcon from '../../Icons/download.png';
 import deleteIcon from '../../Icons/delete.png';
 import editIcon from '../../Icons/edit.png';
 import homeIcon from '../../Icons/home-off.png';
+import checkIcon from '../../Icons/check.png';
+import closeIcon from '../../Icons/close.png';
+import logoutIcon from '../../Icons/logout.png';
 import dataList from '../../database/Khadamat';
 
 // eslint-disable-next-line no-unused-vars
-export default function HomePage ({handleHome,handleLogin,viewId,types,handleDelete}) {
+export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDelete,updateTheFile}) {
+    //search text
     const [search,setSearch] = useState("");
+
+    //these are for rendering
     const [keys, setKeys] = useState([]);
     const [arrayOfItems, setArrayOfItems] = useState ([]);
-    const [dAlert, setDAlert] = useState(false);
-    const [editView, setEditView] = useState(false);
+    const [tempArrayOfItems, setTempArrayOfItems] = useState ([]);
     const [pageInfo, setPageInfo] = useState ({
         fileId: 1,
         name: "حقوق پرسنل خدمات عمومی و پشتیبانی",
         month: "شهریور",
         year: "۱۴۰۳",
-        tags: ["حقوق", "خدمات"],
+        tags: ["پرسنل", "خدمات"],
         fileDate: "1403/10/4",
         archived: 0
     })
+
+    //these are about modifications
+    const [dAlert, setDAlert] = useState(false);
+    const [isAddOpen, setISAddOpen] = useState (false);
+    const [editView, setEditView] = useState(false);
+
+//............functions that run on lunch............
 
     function loadData () {
         const tempKey = [];
@@ -66,14 +79,16 @@ export default function HomePage ({handleHome,handleLogin,viewId,types,handleDel
 
     function enableEdit () {
         if(pageInfo.tags.includes("پرسنل")) {
-            console.log ("personel");
+            setEditView(true);
+            setTempArrayOfItems([...arrayOfItems]);
         }
-        else if(pageInfo.tags.includes("حقوق")){
-            console.log ("payment");
+        else {
+            setISAddOpen(true);
         }
 
-        setEditView(true);
     }
+
+//............functions to handle changes............
 
     function handleSearchChange (event) {
         const {value} = event.target;
@@ -87,30 +102,63 @@ export default function HomePage ({handleHome,handleLogin,viewId,types,handleDel
         const row = numbers[0];
         const column = numbers[1];
 
-        let temp = [...arrayOfItems];
-        temp[row][column] = value;
-        setArrayOfItems(temp);
+        const updatedArray = arrayOfItems.map(item => [...item]);
+        updatedArray[row][column] = value;
+        setArrayOfItems(updatedArray);
     }
-
-    const createGrid = arrayOfItems.map ((item,index) => {
-            return(
-                <DataGrid key={index} item={item} column={index}
-                editView={editView} handleChange={handleChange}/>
-            );
-    });
-
-
-    const createTitleRow = keys.map((itemValue, index) => {
-            return (
-                <div key={index} className="title-element">
-                    {itemValue}
-                </div>
-            )
-    });
 
     function deleteAlert() {
         return setDAlert(true);
     }
+    
+    function openAdd () {
+        setISAddOpen (prev=>!prev);
+    }
+    
+    function handleEdit (update) {
+        updateTheFile(viewId, update);
+    }
+
+//............functions that modify the data............
+
+    function applyEdits(submit) {
+        if (submit) {
+            setTempArrayOfItems([]);
+            setEditView(false);
+        } else {
+            const revertedArray = tempArrayOfItems.map(item => [...item]);
+            setArrayOfItems(revertedArray);
+            setTempArrayOfItems([]);
+            setEditView(false);
+        }
+    }
+    
+//............functions that load the data............
+
+    function searchFor(item){
+        const result = (search!="" ? item.includes(search): true);
+        return result;
+    }
+
+    const createGrid = arrayOfItems.map ((item,index) => {
+        if(searchFor(item)){
+            return(
+                <DataGrid key={index} item={item} column={index}
+                editView={editView} handleChange={handleChange}/>
+            );
+        }
+    });
+
+
+    const createTitleRow = keys.map((itemValue, index) => {
+        return (
+            <div key={index} className="title-element">
+                {itemValue}
+            </div>
+        )
+    });
+
+//............the component itself............
 
     return (
         <div className="hp-semi-body">
@@ -135,17 +183,27 @@ export default function HomePage ({handleHome,handleLogin,viewId,types,handleDel
                     </div>
                 </div>
                 :null}
+
+                {isAddOpen && 
+                <AddingSection OnClose={openAdd} 
+                    OnSubmit={handleEdit} defaultValues={pageInfo}/>
+                }
         
                 <div className="view-header">
                     <p className="view-title">
                         {`${pageInfo.name} ${pageInfo.month} ${pageInfo.year}`}
                     </p>
 
-                    <div className="search-container">
+                    <div className="search-container"
+                    id={editView?"disabled-button":""}>
+
                         <input type="text" placeholder="جست و جو ..."
                             value={search} className="search-input"
-                            onChange={handleSearchChange}/>
-                        <button className="search-button">
+                            onChange={handleSearchChange}
+                            disabled={editView} />
+                        
+                        <button className="search-button"
+                        disabled={editView} >
                             <img src={searchIcon}/>
                         </button>
                     </div>
@@ -167,21 +225,47 @@ export default function HomePage ({handleHome,handleLogin,viewId,types,handleDel
 
                 <div className="footer-section">
                     
-                    <button className="viewPage-button" onClick={handleHome}>
-                        <img src={homeIcon} alt="home"/>
-                    </button>
 
                     <div className="left-footer">
-                        <button className="viewPage-button"
-                        onClick={enableEdit}>
-                            <img src={editIcon} alt="edit"/>
+                        <button className="viewPage-button" onClick={handleLogOut}
+                        disabled={editView} id={editView?"disabled-button":""}>
+                            <img src={logoutIcon} alt="logout"/>
                         </button>
 
-                        <button className="viewPage-button" onClick={deleteAlert}>
+                        <button className="viewPage-button" onClick={handleHome}
+                        disabled={editView} id={editView?"disabled-button":""}>
+                            <img src={homeIcon} alt="home"/>
+                        </button>
+                    </div>
+
+                    <div className="left-footer">
+                        <div className="edit-sec">
+                            <div className="edit-container">
+                                {editView &&
+                                <button className="edit-close" onClick={()=>applyEdits(false)}>
+                                    <img src={closeIcon} alt="close"/>
+                                </button>}
+                                
+                                {editView && 
+                                <button className="edit-check" onClick={()=>applyEdits(true)}>
+                                    <img src={checkIcon} alt="check"/>
+                                </button>}
+                            </div>
+
+                            <button className="viewPage-button"
+                            onClick={enableEdit}>
+                                <img src={editIcon} alt="edit"/>
+                            </button>
+
+                        </div>
+
+                        <button className="viewPage-button" onClick={deleteAlert}
+                        disabled={editView} id={editView?"disabled-button":""}>
                             <img src={deleteIcon} alt="delete"/>
                         </button>
 
-                        <button className="viewPage-button">
+                        <button className="viewPage-button"
+                        disabled={editView} id={editView?"disabled-button":""}>
                             <img src={downloadIcon} alt="download"/>
                         </button>
 
