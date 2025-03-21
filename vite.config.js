@@ -11,5 +11,5 @@ export default defineConfig({
     build: {
         outDir: 'dist'
     },
-    base: '/uni-excell/',
+    base: '/uni-excell',
 });

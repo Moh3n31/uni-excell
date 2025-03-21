@@ -1,6 +1,6 @@
 {
-  "homepage": "https://moh3n31.github.io/uni-excell",
   "name": "uni-excell",
+  "homepage": "https://moh3n31.github.io/uni-excell/",
   "private": true,
   "version": "0.0.0",
   "main": "main.jsx",
@@ -10,7 +10,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "vite build",
+    "predeploy": "yarn run build",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
