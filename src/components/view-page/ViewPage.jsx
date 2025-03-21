@@ -23,6 +23,7 @@ import dataList from '../../database/Khadamat';
 export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDelete,updateTheFile}) {
     //search text
     const [search,setSearch] = useState("");
+    const [activeSearch, setActiveSearch] = useState(false);
 
     //these are for rendering
     const [keys, setKeys] = useState([]);
@@ -93,7 +94,8 @@ export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDe
     function handleSearchChange (event) {
         const {value} = event.target;
         setSearch(value);
-        console.log(dataList);
+        if(search=="")
+            setActiveSearch(false);
     }
 
     function handleChange (event) {
@@ -119,6 +121,11 @@ export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDe
         updateTheFile(viewId, update);
     }
 
+    function handleSearchActive () {
+        if(search!="")
+            setActiveSearch(true);
+    }
+
 //............functions that modify the data............
 
     function applyEdits(submit) {
@@ -135,20 +142,39 @@ export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDe
     
 //............functions that load the data............
 
-    function searchFor(item){
-        const result = (search!="" ? item.includes(search): true);
+    function normalizePersianY(text) {
+        text = String(text);
+        return text.replace(/ى/g, 'ی').replace(/ی/g, 'ی').normalize("NFKC");
+    }
+
+    function searchFor(item) {
+        let result = false;
+        const normalizedSearch = normalizePersianY(search.trim());
+
+        for (let i = 0; i < item.length; i++) {
+            const normalizedItem = normalizePersianY(String(item[i]).trim());
+
+            // Use a regular expression for partial matching (case insensitive)
+            const regex = new RegExp(normalizedSearch, "i");  // "i" makes it case-insensitive
+
+            if (regex.test(normalizedItem)) {
+                result = true;
+                break;
+            }
+        }
         return result;
     }
 
-    const createGrid = arrayOfItems.map ((item,index) => {
-        if(searchFor(item)){
-            return(
+    const createGrid = arrayOfItems.map((item, index) => {
+        if ((activeSearch? searchFor(item) : true)) {
+            return (
                 <DataGrid key={index} item={item} column={index}
-                editView={editView} handleChange={handleChange}/>
+                    editView={editView} handleChange={handleChange} />
             );
+        } else {
+            return null;
         }
     });
-
 
     const createTitleRow = keys.map((itemValue, index) => {
         return (
@@ -203,7 +229,7 @@ export default function HomePage ({handleHome,handleLogOut,viewId,types,handleDe
                             disabled={editView} />
                         
                         <button className="search-button"
-                        disabled={editView} >
+                        disabled={editView} onClick={handleSearchActive}>
                             <img src={searchIcon}/>
                         </button>
                     </div>
