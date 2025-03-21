@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d build -b master"
   },
   "dependencies": {
     "jalaali-js": "^1.2.7",
