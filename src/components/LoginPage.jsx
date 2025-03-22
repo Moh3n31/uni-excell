@@ -7,7 +7,7 @@ import webLogo from "../Icons/qom-icon.png";
 import allowedUsers from "../database/allowedUsers";
 
 export default function LoginPage ({handleLogin}){
-    const [inputs, setInputs] = useState ({username:null,password:null});
+    const [inputs, setInputs] = useState ({username:"test",password:"123"});
     const [wrong, setWrong] = useState (false);
     const user =allowedUsers;
 

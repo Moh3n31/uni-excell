@@ -1,6 +1,6 @@
 {
   "name": "uni-excell",
-  "homepage": "https://moh3n31.github.io/uni-excell/",
+  "homepage": "https://moh3n31.github.io/uni-excell",
   "private": true,
   "version": "0.0.0",
   "main": "main.jsx",
@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build -b master"
+    "deploy": "gh-pages -d dist -b master"
   },
   "dependencies": {
     "jalaali-js": "^1.2.7",
